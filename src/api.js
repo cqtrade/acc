@@ -15,7 +15,27 @@ async function getAccountInfo() {
  * Kline/Candlestick Data<br>
  *
  * GET /api/v3/klines<br>
- *
+ * 
+ * Intervals: 
+ * 1s
+ * 1m
+ * 3m
+ * 5m
+ * 15m
+ * 30m
+ * 1h
+ * 2h
+ * 4h
+ * 6h
+ * 8h
+ * 12h
+ * 1d
+ * 3d
+ * 1w
+ * 1M
+ * 
+ * limit: Default 500; max 1000
+ * 
  * {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
  */
 async function getCandles(symbol, interval, opts) {
@@ -39,7 +59,3 @@ async function getCandles(symbol, interval, opts) {
 }
 
 exports.getCandles = getCandles
-
-// getCandles('BTCUSDT', '1h', { limit: 5 })
-//     .then(candles => console.log(candles))
-//     .catch()
