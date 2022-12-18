@@ -21,6 +21,17 @@ async function getAccountInfo() {
     }
 }
 
+async function getExchangeInfo(options) {
+    try {
+        const res = await client.exchangeInfo(options)
+
+        return res.data
+    } catch (error) {
+        console.log('ERROR getExchangeInfo', error)
+        throw error
+    }
+}
+
 async function getOpenOrders() {
     try {
         const res = await client.openOrders()
@@ -103,6 +114,7 @@ async function getCandles(symbol, interval, opts) {
 }
 
 exports.getAccountInfo = getAccountInfo
+exports.getExchangeInfo = getExchangeInfo
 exports.getCandles = getCandles
 exports.getOpenOrders = getOpenOrders
 exports.createNewOrder = createNewOrder
