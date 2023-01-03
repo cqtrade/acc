@@ -80,13 +80,13 @@ async function getExchangeInfoForSymbol(symbol) {
     }, {})
 }
 
-const toFixedWithoutRounding = (floatNumber, precision) => {
+function toFixedWithoutRounding(floatNumber, precision) {
     const factor = Math.pow(10, precision)
 
     return Math.floor(floatNumber * factor) / factor
 }
 
-const roundStep = (floatNumber, stepSize) => {
+function roundStep(floatNumber, stepSize) {
     const precision = stepSize.split('.')[1].indexOf('1') + 1
 
     return toFixedWithoutRounding(floatNumber, precision)
