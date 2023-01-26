@@ -2,21 +2,76 @@ const { Spot } = require('@binance/connector')
 
 const apiKey = process.env.ACC_API_KEY
 const apiSecret = process.env.ACC_API_SECRET
+const isTestnet = process.env.ACC_IS_TESTNET
 
-const client = new Spot(apiKey, apiSecret)
+const baseURL = isTestnet
+    ? 'https://testnet.binance.vision'
+    : 'https://api.binance.com'
+
+const client = new Spot(apiKey, apiSecret, { baseURL })
 
 async function getAccountInfo() {
-    const res = await client.account()
-    console.log(res)
+    try {
+        const res = await client.account()
+
+        return res.data
+    } catch (error) {
+        console.log('ERROR getAccountInfo', error)
+        throw error
+    }
+}
+
+async function getExchangeInfo(options) {
+    try {
+        const res = await client.exchangeInfo(options)
+
+        return res.data
+    } catch (error) {
+        console.log('ERROR getExchangeInfo', error)
+        throw error
+    }
+}
+
+async function getOpenOrders() {
+    try {
+        const res = await client.openOrders()
+
+        return res.data
+    } catch (error) {
+        console.log('ERROR getOpenOrders', error)
+        throw error
+    }
+}
+
+async function createNewOrder(symbol, side, type, options) {
+    try {
+        const res = await client.newOrder(symbol, side, type, options)
+
+        return res
+    } catch (error) {
+        console.log('ERROR createNewOrder', error)
+        throw error
+    }
+}
+
+async function cancelOpenOrders(symbol, options) {
+    try {
+        const res = await client.cancelOpenOrders(symbol, options)
+
+        return res.data
+    } catch (error) {
+        console.log('ERROR cancelOpenOrders', error)
+        throw error
+    }
 }
 
 /**
- * 
+ *
  * Kline/Candlestick Data<br>
  *
  * GET /api/v3/klines<br>
- * 
- * Intervals: 
+ *
+ * Intervals:
  * 1s
  * 1m
  * 3m
@@ -33,9 +88,9 @@ async function getAccountInfo() {
  * 3d
  * 1w
  * 1M
- * 
+ *
  * limit: Default 500; max 1000
- * 
+ *
  * {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
  */
 async function getCandles(symbol, interval, opts) {
@@ -58,4 +113,9 @@ async function getCandles(symbol, interval, opts) {
     }
 }
 
+exports.getAccountInfo = getAccountInfo
+exports.getExchangeInfo = getExchangeInfo
 exports.getCandles = getCandles
+exports.getOpenOrders = getOpenOrders
+exports.createNewOrder = createNewOrder
+exports.cancelOpenOrders = cancelOpenOrders
